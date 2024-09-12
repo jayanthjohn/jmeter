@@ -20,6 +20,7 @@ jobs:
       uses: actions/setup-java@v3
       with:
         java-version: '11'
+        distribution: 'adopt'  # You can also use 'zulu', 'temurin', etc.
 
     - name: Run JMeter Test
       uses: QAInsights/PerfAction@v5.6.2
