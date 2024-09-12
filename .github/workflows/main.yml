@@ -22,7 +22,7 @@ jobs:
     - name: Run JMeter Tests
       uses: QAInsights/PerfAction@v5.6.2
       with:
-        test-plan-path: .sample.jmx
+        test-plan-path: ./sample.jmx
         args: "-e -o ./reports/html/"
         
     - name: Upload Results
