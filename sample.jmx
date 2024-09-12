@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.6.3">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.tearDown_on_shutdown">false</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments"/>
+      </elementProp>
+    </TestPlan>
+    <hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group">
+        <intProp name="ThreadGroup.num_threads">2</intProp>
+        <intProp name="ThreadGroup.ramp_time">1</intProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <stringProp name="LoopController.loops">50</stringProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
+      </ThreadGroup>
+      <hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="HTTP Request" enabled="false">
+          <intProp name="HTTPSampler.concurrentPool">6</intProp>
+          <stringProp name="HTTPSampler.domain">prodapi.accorlive.net</stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.path">api/auth/register-user-request</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <stringProp name="HTTPSampler.method">OPTIONS</stringProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">false</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="accept" elementType="Header">
+                <stringProp name="Header.name">accept</stringProp>
+                <stringProp name="Header.value">application/json, text/plain, */*</stringProp>
+              </elementProp>
+              <elementProp name="accept-encoding" elementType="Header">
+                <stringProp name="Header.name">accept-encoding</stringProp>
+                <stringProp name="Header.value">gzip, deflate, br, zstd</stringProp>
+              </elementProp>
+              <elementProp name="accept-language" elementType="Header">
+                <stringProp name="Header.name">accept-language</stringProp>
+                <stringProp name="Header.value">en-US,en;q=0.9</stringProp>
+              </elementProp>
+              <elementProp name="Access-Control-Request-Headers" elementType="Header">
+                <stringProp name="Header.name">Access-Control-Request-Headers</stringProp>
+                <stringProp name="Header.value">authorization,content-type</stringProp>
+              </elementProp>
+              <elementProp name="Access-Control-Request-Method" elementType="Header">
+                <stringProp name="Header.name">Access-Control-Request-Method</stringProp>
+                <stringProp name="Header.value">POST</stringProp>
+              </elementProp>
+              <elementProp name="origin=https" elementType="Header">
+                <stringProp name="Header.name">origin=https</stringProp>
+                <stringProp name="Header.value">//www.liveaccorworld.online</stringProp>
+              </elementProp>
+              <elementProp name="priority" elementType="Header">
+                <stringProp name="Header.name">priority</stringProp>
+                <stringProp name="Header.value">u=1, i</stringProp>
+              </elementProp>
+              <elementProp name="referer" elementType="Header">
+                <stringProp name="Header.name">referer</stringProp>
+                <stringProp name="Header.value">https://www.liveaccorworld.online/</stringProp>
+              </elementProp>
+              <elementProp name="sec-ch-ua" elementType="Header">
+                <stringProp name="Header.name">sec-ch-ua</stringProp>
+                <stringProp name="Header.value">Not/A)Brand;v=8, Chromium;v=126, Microsoft Edge;v=126</stringProp>
+              </elementProp>
+              <elementProp name="sec-ch-ua-mobile" elementType="Header">
+                <stringProp name="Header.name">sec-ch-ua-mobile</stringProp>
+                <stringProp name="Header.value">?0</stringProp>
+              </elementProp>
+              <elementProp name="sec-ch-ua-platform" elementType="Header">
+                <stringProp name="Header.name">sec-ch-ua-platform</stringProp>
+                <stringProp name="Header.value">Windows</stringProp>
+              </elementProp>
+              <elementProp name="sec-fetch-dest" elementType="Header">
+                <stringProp name="Header.name">sec-fetch-dest</stringProp>
+                <stringProp name="Header.value">empty</stringProp>
+              </elementProp>
+              <elementProp name="sec-fetch-mode" elementType="Header">
+                <stringProp name="Header.name">sec-fetch-mode</stringProp>
+                <stringProp name="Header.value">cors</stringProp>
+              </elementProp>
+              <elementProp name="sec-fetch-site" elementType="Header">
+                <stringProp name="Header.name">sec-fetch-site</stringProp>
+                <stringProp name="Header.value">cross-site</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="HTTP Request">
+          <intProp name="HTTPSampler.concurrentPool">6</intProp>
+          <stringProp name="HTTPSampler.domain">prodapi.accorlive.net</stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.path">api/auth/register-user-request</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+    &quot;reCaptcha&quot;:&quot;03AFcWeA7rl2scDpNFIzSdGUuWKzO9RafLnyn2hAVD3I4YpI9cEyJ3Ut8FeKoway2CxC5ceyEOrSxxjEYx76q6ShSj_-cKwqlFMk6mu_7d8XjGL2XEzCfJtTxcrV_Lcj7SVMQxLgMs62UxgymCiUz8zojxC4BQwBXGcu3Q9paos1wDa8x_Np5g3irrT8Bx_Q7y7oap987Tat104yyEL8SAbSYye2Mdqq9E-6RXlRdmbNtXXY0PWXfRLYsln6IUXAexO1BkkVImnWcUG396aZViUfmqDio6nt2n4dJZuK6x69aLPdZetDxDzvAY1pywekDjff479AjQHG983rxTHhfAtfZKoMmDeyKmHNvFXNIv_iks0vnnHspBuizZHUX5Lh3wjDtrELGGXUNVsWkVLnzvQYr5vPuYgkWhCYdJDSQR8P9LYuEFD8WRbWJIT88Gat1g0CHMyudSttbCTKDRcsMD4I5WBW1CY8xHiUhIRD5cRnw4I1s4qqWlvuNllAi6VRQ3S0ePHGveU91tHKLJyKy3mFZxS54tbirTAyIbidtShwTXrlPqOFIgwMtkyZdPIoSKPZLmW9YihLMLGL0dZTQiFRYAHf-h6r4ka0ROfPWvxvu54HOzVhGnuUKguIc3foGLrEnE2DHquPxZ8VSo5i3AU3aY5fqy93lLJztkP6GM50Gli9YNvI-tIKGBaJSibCDkIL-SYav4CdU_j3fi-twTxH1-qbYOOOYNIxfr1Fr2M2EICZHPzCqHsOJs6g46xmNNXB07iGSsHL3ltIoFGy8llp12BUpXX50CliP4ribcPvuK7mwCstIZA5bCmja8labcS1vV8x-R3652pcQ52G5l9dPD1pvqP4WXJpmsVc0v3NLZQZXLVfU6lWIJIj2zMzklamNxiTbW_GHYdw2kni1LzsnuNIwJMjBk8LcsRSEMnUY5JGEhPrtjdGcixQkF6pUvygfULqw66F3eXqe0CcqCBrm3nNwIwDfEIrDk8dF0w2qI-FF1IdTwZVaJ51tSMWSMl6MBua3tGjsbUzWTcfqGW3Jev5cWS1dwUOStcYvNI7DcAFcW_V3rx1ZBKLujaYg1_aA9LOjWgXToL9FYwsUTktYlvtRwQWR8O5let-QWaE78gFC_cad6AmWdRielJ2HXKmdV1XRoTTLuS13YwEPOLimQ5sVJURiAAV-tj3hv4vcGeUmdHSymvSAlAZb-uGM7BldWgQ4anYe8zAOyKyusAEmv4WSZhn7pUcnmgFBQOuZ20sl00b1Mt2TwEr-N0s_UPixThDHatfEjqiNTkIslzVql5Ax5_dQgizXZTr3vGjDkZhNUa2Nd2u0cfZlgFnmkylU5iRb-RpeoSNPEA9v4Vurd9N3PtNNND16oue37z18Gt8mpSRlrtebGW7kbOLcn_OxiISv6bXbP4aYmIkHK03FNtOI6KksNJKFP50MpW8qi3PePiWv7CvEi4dkzoxLnHCPcBVaerFWvTh5TAfZy8Gs3VuJumwF_yrNGeo1iAC8uzMdiw4PZ5fS1pTc4zhUDrBABxma6D7boyl9foCeAdwfdQwPHjofknQuHSO_-m2a2g9PpnvkjaozzRsZUJTYaHOUOVUjRFkP1R49L_quXGM75TcQaL7tohNnwim5EyTwqkW65qdfi26nefRaWCxIpmYfABh5QXNKRXw6E62KtfH9hWVga3mrgUYHtzCSOe88tLULUtiOGCRCwMnsYdi7mQyvmvBYKwykXLpEuIbzVqlAOZis2gvGHLGCZoYwdMG-rZ1iaIdIpPQzVHxyFEMI0xr8q3Kfab8yLaxayMnA6OMRn4y4cKQDEKp8A-zHy_A5AiMRP8XDDkH40ZAoReb-x_xy1DmHdwWAprXSb5OEpKsCLqc3A8cMarPqAFltB5CqkoMZzavRehkM_k7opE110HdA9OdYZjV4uEvFVOOjnTbff_kQFVYF5RRavv6nz7pCOb8alG3JsAcKf-vdLn2LjywBaaaNlUwj3ZUFUGBceSwoz_3t65KPK8BcCsE3bBqSkTULD0zYDpGxxFQZrAkblnbM7YnkvmF3Yas9CJdwtWY2PilWwCmHzyJF_xAS1t41LEAoI7ZA23OleEYb8FCp_0guHTGNFQ1jb59LgZwn0qYUi0BUd8VQCD800beXBxYyoIkDg2XAJtihZ9iTiwHp0V13lxiBZ6z5X&quot;,&#xd;
+    &quot;username&quot;: &quot;${randomString1}&quot;,&#xd;
+    &quot;phoneNo&quot;: &quot;9${randomNumber}&quot;,&#xd;
+    &quot;password&quot;: &quot;${randomString2}&quot;,&#xd;
+    &quot;confirmPassword&quot;: &quot;${randomString2}&quot;,&#xd;
+    &quot;isTerms&quot;: true,&#xd;
+    &quot;otpStatus&quot;: true,&#xd;
+    &quot;inviteCode&quot;: &quot;UB4H-3T0C-LC78&quot;,&#xd;
+    &quot;countryCode&quot;: &quot;91&quot;&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Referrer Policy</stringProp>
+                <stringProp name="Header.value">strict-origin-when-cross-origin</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Content-Type</stringProp>
+                <stringProp name="Header.value">application/json</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+          <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="JSR223 PreProcessor">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">import java.security.SecureRandom
+
+// Generate a random 10-digit number
+def randomNumber = (100000000 + (Math.random() * 900000000)).toLong()
+
+// Generate a random 8-character string
+def generateRandomString(length) {
+    def chars = (&apos;a&apos;..&apos;z&apos;) + (&apos;A&apos;..&apos;Z&apos;) + (&apos;0&apos;..&apos;9&apos;)
+    def random = new SecureRandom()
+    def sb = new StringBuilder(length)
+    (1..length).each {
+        sb.append(chars[random.nextInt(chars.size())])
+    }
+    return sb.toString()
+}
+
+// Generate a random 8-character string with at least one uppercase, lowercase, symbol, and number
+def generateComplexRandomString(length) {
+    def lower = (&apos;a&apos;..&apos;z&apos;)
+    def upper = (&apos;A&apos;..&apos;Z&apos;)
+    def digits = (&apos;0&apos;..&apos;9&apos;)
+    def symbols = (&apos;!@#$%^&amp;*()+-=[]{}|;:,.&lt;&gt;?&apos;)
+    def allChars = lower + upper + digits + symbols
+    def random = new SecureRandom()
+    def sb = new StringBuilder(length)
+
+    // Ensure at least one of each required character type
+    sb.append(lower[random.nextInt(lower.size())])
+    sb.append(upper[random.nextInt(upper.size())])
+    sb.append(digits[random.nextInt(digits.size())])
+    sb.append(symbols[random.nextInt(symbols.size())])
+
+    // Fill the rest of the string
+    (5..length).each {
+        sb.append(allChars[random.nextInt(allChars.size())])
+    }
+
+    // Shuffle to avoid predictable pattern
+    def shuffled = sb.toString().toList().sort { random.nextInt() }
+    return shuffled.join(&apos;&apos;)
+}
+
+def randomString1 = generateRandomString(8)
+def randomString2 = generateComplexRandomString(8)
+
+// Check if the variable already exists and ensure uniqueness (simple approach)
+if (vars.get(&quot;uniqueNumbers&quot;) == null) {
+    vars.put(&quot;uniqueNumbers&quot;, randomNumber.toString())
+    vars.put(&quot;uniqueStrings&quot;, randomString1 + &quot;,&quot; + randomString2)
+} else {
+    def uniqueNumbers = vars.get(&quot;uniqueNumbers&quot;).split(&quot;,&quot;)
+    while (uniqueNumbers.contains(randomNumber.toString())) {
+        randomNumber = (100000000 + (Math.random() * 900000000)).toLong()
+    }
+    vars.put(&quot;uniqueNumbers&quot;, vars.get(&quot;uniqueNumbers&quot;) + &quot;,&quot; + randomNumber.toString())
+
+    def uniqueStrings = vars.get(&quot;uniqueStrings&quot;).split(&quot;,&quot;)
+    while (uniqueStrings.contains(randomString1) || uniqueStrings.contains(randomString2)) {
+        randomString1 = generateRandomString(8)
+        randomString2 = generateComplexRandomString(8)
+    }
+    vars.put(&quot;uniqueStrings&quot;, vars.get(&quot;uniqueStrings&quot;) + &quot;,&quot; + randomString1 + &quot;,&quot; + randomString2)
+}
+
+// Store the random number and strings in JMeter variables
+vars.put(&quot;randomNumber&quot;, randomNumber.toString())
+vars.put(&quot;randomString1&quot;, randomString1)
+vars.put(&quot;randomString2&quot;, randomString2)
+</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223PreProcessor>
+          <hashTree/>
+        </hashTree>
+        <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <name>saveConfig</name>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>false</responseData>
+              <samplerData>false</samplerData>
+              <xml>false</xml>
+              <fieldNames>true</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+              <sentBytes>true</sentBytes>
+              <url>true</url>
+              <threadCounts>true</threadCounts>
+              <idleTime>true</idleTime>
+              <connectTime>true</connectTime>
+            </value>
+          </objProp>
+          <stringProp name="filename"></stringProp>
+        </ResultCollector>
+        <hashTree/>
+      </hashTree>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>
