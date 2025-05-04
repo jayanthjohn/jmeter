@@ -1,45 +1,32 @@
-name: Run JMeter Tests
+name: Run JMeter Test and Export Output
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+    paths:
+      - '**.jmx'
+  workflow_dispatch:
 
 jobs:
-  jmeter_job:
+  jmeter-test:
     runs-on: ubuntu-latest
-    name: JMeter Test Execution
-    steps:      
-    - name: Checkout
+
+    steps:
+    - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Create reports directory
-      run: mkdir reports
-      
-    - name: Run JMeter Tests
-      uses: QAInsights/PerfAction@v5.6.2
+    - name: Run JMeter script
+      uses: justb4/jmeter-action@v2.1.1
       with:
-        test-plan-path: ./FetchNames.jmx
-        args: "-e -o ./reports/html/"
-        
-    - name: Verify Files
-      run: |
-        ls -l result.jtl
-        ls -l reports
+        jmx_file: FetchNames.jmx
 
-    - name: Upload Results
-      uses: actions/upload-artifact@v3.1.0
+    - name: Archive JMeter result.jtl
+      uses: actions/upload-artifact@v4
       with:
-        name: jmeter-results
+        name: jmeter-jtl-results
         path: result.jtl
-        if-no-files-found: error
 
-    - name: Upload HTML Reports
-      uses: actions/upload-artifact@v3.1.0
+    - name: Archive output.csv
+      uses: actions/upload-artifact@v4
       with:
-        name: jmeter-reports
-        path: reports
-        if-no-files-found: error
+        name: movie-output
+        path: output.csv
