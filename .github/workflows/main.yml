@@ -25,15 +25,20 @@ jobs:
         test-plan-path: ./FetchNames.jmx
         args: "-e -o ./reports/html/"
         
+    - name: Verify Files
+      run: |
+        ls -l result.jtl
+        ls -l reports
+
     - name: Upload Results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v3.1.0
       with:
         name: jmeter-results
         path: result.jtl
         if-no-files-found: error
 
     - name: Upload HTML Reports
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v3.1.0
       with:
         name: jmeter-reports
         path: reports
