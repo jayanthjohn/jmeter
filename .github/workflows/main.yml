@@ -12,18 +12,19 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
-    - name: Run JMeter script
-      uses: justb4/jmeter-action@v2.0.0
+    - name: Run JMeter Test
+      uses: rbhadti94/apache-jmeter-action@v0.7.0
       with:
-        jmx_file: FetchNames.jmx
+        testFilePath: FetchNames.jmx
+        outputReportsFolder: reports/
 
     - name: Archive JMeter result.jtl
       uses: actions/upload-artifact@v4
       with:
         name: jmeter-jtl-results
-        path: result.jtl
+        path: reports/result.jtl
 
     - name: Archive output.csv
       uses: actions/upload-artifact@v4
