@@ -1,4 +1,4 @@
-name: Run JMeter Test and Export Output
+name: Run JMeter Test and Push CSV
 
 on:
   push:
@@ -32,13 +32,17 @@ jobs:
         name: movie-output
         path: output.csv
 
-    - name: Commit output.csv to repository
+    - name: Commit output.csv to repository using PAT
+      env:
+        PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git remote set-url origin https://x-access-token:${PAT_TOKEN}@github.com/${{ github.repository }}
+
+        # Prevent duplicate entries, keeping header
+        awk '!seen[$0]++ || NR==1' output.csv > temp.csv && mv temp.csv output.csv
+
         git add output.csv
         git commit -m "Update output.csv from JMeter test" || echo "No changes to commit"
-        git push origin HEAD:main
-      env:
-        # Optional: Use PAT if pushing to protected branch
-        GITHUB_TOKEN: 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
+        git push origin HEAD:${{ github.ref_name }}
