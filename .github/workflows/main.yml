@@ -41,4 +41,4 @@ jobs:
         git push origin HEAD:FetchNames
       env:
         # Optional: Use PAT if pushing to protected branch
-        GITHUB_TOKEN: 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
+        GITHUB_TOKEN: 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
