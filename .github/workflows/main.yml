@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - '**.jmx'
-  workflow_dispatch:
+workflow_dispatch:
 
 jobs:
   jmeter-test:
