@@ -1,4 +1,4 @@
-name: Run JMeter Test and Push CSV
+name: Run JMeter Test and Push CSV to Google Sheet
 
 on:
   push:
@@ -42,40 +42,10 @@ jobs:
         pip install --upgrade google-api-python-client google-auth
 
     - name: Write Google credentials file
-      run: echo "${{ secrets.GOOGLE_SHEET_CREDS_JSON }}" > service-account.json
+      run: |
+        cat <<EOF > service-account.json
+        ${{ secrets.GOOGLE_SHEET_CREDS_JSON }}
+        EOF
 
     - name: Push output.csv to Google Sheet
-      run: |
-        python <<EOF
-        import csv
-        from google.oauth2.service_account import Credentials
-        from googleapiclient.discovery import build
-
-        CSV_FILE = 'output.csv'
-        SERVICE_ACCOUNT_FILE = 'service-account.json'
-        SPREADSHEET_ID = 'your_spreadsheet_id_here'
-        SHEET_NAME = 'Sheet1'
-
-        creds = Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=["https://www.googleapis.com/auth/spreadsheets"])
-        service = build('sheets', 'v4', credentials=creds)
-
-        with open(CSV_FILE, newline='') as f:
-            reader = csv.reader(f)
-            values = list(reader)
-
-        # Optional: clear old data
-        service.spreadsheets().values().clear(
-            spreadsheetId=SPREADSHEET_ID,
-            range=f'{SHEET_NAME}!A1:Z1000'
-        ).execute()
-
-        body = { 'values': values }
-        result = service.spreadsheets().values().update(
-            spreadsheetId=SPREADSHEET_ID,
-            range=f'{SHEET_NAME}!A1',
-            valueInputOption='RAW',
-            body=body
-        ).execute()
-
-        print(f"{result.get('updatedCells')} cells updated in Google Sheet.")
-        EOF
+      run: python update_sheet.py ${{ secrets.GOOGLE_SHEET_ID }}
