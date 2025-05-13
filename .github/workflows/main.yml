@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - '**.jmx'
-workflow_dispatch:
+  workflow_dispatch:
 
 jobs:
   jmeter-test:
@@ -14,8 +14,15 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: List repo contents (to confirm JMX exists)
-      run: ls -la && ls -la ./FetchNames.jmx || echo "File not found"
+    - name: List all repo contents
+      run: ls -R
+
+    - name: Check FetchNames.jmx existence
+      run: |
+        if [ ! -f FetchNames.jmx ]; then
+          echo "ERROR: FetchNames.jmx not found in root of repo"
+          exit 1
+        fi
 
     - name: Run JMeter Test
       uses: rbhadti94/apache-jmeter-action@v0.7.0
@@ -24,23 +31,27 @@ jobs:
         outputReportsFolder: reports/
         outputFile: reports/result.jtl
 
-    - name: Archive HTML Reports (for manual check)
+    - name: Archive HTML Reports
       uses: actions/upload-artifact@v4
       with:
         name: jmeter-html-reports
         path: reports/
 
-    - name: Debug: list contents of reports/
+    - name: List contents of reports folder
       run: |
-        echo "Contents of reports folder:"
-        ls -R reports || echo "No reports directory found"
+        echo "Reports directory contents:"
+        ls -la reports || echo "Reports folder not found"
 
-    - name: Debug: dump result.jtl if exists
+    - name: View result.jtl content
       run: |
-        echo "Contents of result.jtl:"
-        cat reports/result.jtl || echo "No result.jtl found"
+        if [ -f reports/result.jtl ]; then
+          echo "Dumping result.jtl:"
+          cat reports/result.jtl
+        else
+          echo "result.jtl not found"
+        fi
 
-    - name: Archive output.csv if it exists
+    - name: Archive output.csv if exists
       uses: actions/upload-artifact@v4
       with:
         name: output-csv
