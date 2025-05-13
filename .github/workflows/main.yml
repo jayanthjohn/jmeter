@@ -1,4 +1,4 @@
-name: Run JMeter Test and Push CSV to Google Sheet
+name: Debug JMeter Execution and Push to Google Sheet
 
 on:
   push:
@@ -14,32 +14,45 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
+    - name: List repo contents (to confirm JMX exists)
+      run: ls -la && ls -la ./FetchNames.jmx || echo "File not found"
+
     - name: Run JMeter Test
       uses: rbhadti94/apache-jmeter-action@v0.7.0
       with:
         testFilePath: FetchNames.jmx
         outputReportsFolder: reports/
+        outputFile: reports/result.jtl
 
-    - name: Archive JMeter result.jtl
+    - name: Archive HTML Reports (for manual check)
       uses: actions/upload-artifact@v4
       with:
-        name: jmeter-jtl-results
-        path: reports/result.jtl
+        name: jmeter-html-reports
+        path: reports/
 
-    - name: Archive output.csv
+    - name: Debug: list contents of reports/
+      run: |
+        echo "Contents of reports folder:"
+        ls -R reports || echo "No reports directory found"
+
+    - name: Debug: dump result.jtl if exists
+      run: |
+        echo "Contents of result.jtl:"
+        cat reports/result.jtl || echo "No result.jtl found"
+
+    - name: Archive output.csv if it exists
       uses: actions/upload-artifact@v4
       with:
-        name: movie-output
+        name: output-csv
         path: output.csv
 
-    - name: Set up Python
+    - name: Setup Python for Google Sheets
       uses: actions/setup-python@v5
       with:
         python-version: '3.11'
 
     - name: Install Python dependencies
-      run: |
-        pip install --upgrade google-api-python-client google-auth
+      run: pip install --upgrade google-api-python-client google-auth
 
     - name: Write Google credentials file
       run: |
