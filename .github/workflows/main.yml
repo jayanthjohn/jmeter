@@ -32,17 +32,50 @@ jobs:
         name: movie-output
         path: output.csv
 
-    - name: Commit output.csv to repository using PAT
-      env:
-        PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install Python dependencies
       run: |
-        git config --global user.name "github-actions[bot]"
-        git config --global user.email "github-actions[bot]@users.noreply.github.com"
-        git remote set-url origin https://x-access-token:${PAT_TOKEN}@github.com/${{ github.repository }}
+        pip install --upgrade google-api-python-client google-auth
 
-        # Prevent duplicate entries, keeping header
-        awk '!seen[$0]++ || NR==1' output.csv > temp.csv && mv temp.csv output.csv
+    - name: Write Google credentials file
+      run: echo "${{ secrets.GOOGLE_SHEET_CREDS_JSON }}" > service-account.json
 
-        git add output.csv
-        git commit -m "Update output.csv from JMeter test" || echo "No changes to commit"
-        git push origin HEAD:${{ github.ref_name }}
+    - name: Push output.csv to Google Sheet
+      run: |
+        python <<EOF
+        import csv
+        from google.oauth2.service_account import Credentials
+        from googleapiclient.discovery import build
+
+        CSV_FILE = 'output.csv'
+        SERVICE_ACCOUNT_FILE = 'service-account.json'
+        SPREADSHEET_ID = 'your_spreadsheet_id_here'
+        SHEET_NAME = 'Sheet1'
+
+        creds = Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=["https://www.googleapis.com/auth/spreadsheets"])
+        service = build('sheets', 'v4', credentials=creds)
+
+        with open(CSV_FILE, newline='') as f:
+            reader = csv.reader(f)
+            values = list(reader)
+
+        # Optional: clear old data
+        service.spreadsheets().values().clear(
+            spreadsheetId=SPREADSHEET_ID,
+            range=f'{SHEET_NAME}!A1:Z1000'
+        ).execute()
+
+        body = { 'values': values }
+        result = service.spreadsheets().values().update(
+            spreadsheetId=SPREADSHEET_ID,
+            range=f'{SHEET_NAME}!A1',
+            valueInputOption='RAW',
+            body=body
+        ).execute()
+
+        print(f"{result.get('updatedCells')} cells updated in Google Sheet.")
+        EOF
