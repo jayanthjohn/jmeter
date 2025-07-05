@@ -5,6 +5,8 @@
       <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
         <collectionProp name="Arguments.arguments"/>
       </elementProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
     </TestPlan>
     <hashTree>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group">
@@ -66,7 +68,7 @@
           </elementProp>
         </HTTPSamplerProxy>
         <hashTree>
-          <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor">
+          <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
             <stringProp name="RegexExtractor.useHeaders">false</stringProp>
             <stringProp name="RegexExtractor.refname">openloadUrl</stringProp>
             <stringProp name="RegexExtractor.regex">data-openload=&quot;([^&quot;]+)&quot;</stringProp>
@@ -76,7 +78,7 @@
             <stringProp name="RegexExtractor.match_number">0</stringProp>
           </RegexExtractor>
           <hashTree/>
-          <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="JSR223 PostProcessor">
+          <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="JSR223 PostProcessor" enabled="true">
             <stringProp name="cacheKey">true</stringProp>
             <stringProp name="filename"></stringProp>
             <stringProp name="parameters"></stringProp>
@@ -109,7 +111,7 @@ file &lt;&lt; &quot;${movieslug},${openloadUrl}\n&quot;
           <boolProp name="displaySystemProperties">false</boolProp>
         </DebugSampler>
         <hashTree/>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Movie Slug Loop Controller"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Movie Slug Loop Controller" enabled="true"/>
         <hashTree>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Movie Slugs">
             <boolProp name="LoopController.continue_forever">false</boolProp>
@@ -144,7 +146,7 @@ file &lt;&lt; &quot;${movieslug},${openloadUrl}\n&quot;
               <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Extract Openload URL">
                 <stringProp name="RegexExtractor.useHeaders">false</stringProp>
                 <stringProp name="RegexExtractor.refname">openloadUrl</stringProp>
-                <stringProp name="RegexExtractor.regex">data-openload=&quot;([^&quot;]+)&quot;</stringProp>
+                <stringProp name="RegexExtractor.regex">data-drive=&quot;(https?://[^&quot;]+)&quot;</stringProp>
                 <stringProp name="RegexExtractor.template">$1$</stringProp>
                 <stringProp name="RegexExtractor.default">NOT_FOUND</stringProp>
                 <stringProp name="RegexExtractor.match_number">1</stringProp>
@@ -173,7 +175,7 @@ file &lt;&lt; &quot;${movieslug},${openloadUrl}\n&quot;
           </hashTree>
         </hashTree>
       </hashTree>
-      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="false">
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree">
         <boolProp name="ResultCollector.error_logging">false</boolProp>
         <objProp>
           <name>saveConfig</name>
