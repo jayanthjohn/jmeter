@@ -1,4 +1,4 @@
-name: Run JMeter Test and Export Output
+name: Debug JMeter Execution and Push to Google Sheet
 
 on:
   push:
@@ -14,31 +14,62 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
+    - name: List all repo contents
+      run: ls -R
+
+    - name: Check FetchNames.jmx existence
+      run: |
+        if [ ! -f FetchNames.jmx ]; then
+          echo "ERROR: FetchNames.jmx not found in root of repo"
+          exit 1
+        fi
+
     - name: Run JMeter Test
       uses: rbhadti94/apache-jmeter-action@v0.7.0
       with:
         testFilePath: FetchNames.jmx
         outputReportsFolder: reports/
+        outputFile: reports/result.jtl
 
-    - name: Archive JMeter result.jtl
+    - name: Archive HTML Reports
       uses: actions/upload-artifact@v4
       with:
-        name: jmeter-jtl-results
-        path: reports/result.jtl
+        name: jmeter-html-reports
+        path: reports/
 
-    - name: Archive output.csv
+    - name: List contents of reports folder
+      run: |
+        echo "Reports directory contents:"
+        ls -la reports || echo "Reports folder not found"
+
+    - name: View result.jtl content
+      run: |
+        if [ -f reports/result.jtl ]; then
+          echo "Dumping result.jtl:"
+          cat reports/result.jtl
+        else
+          echo "result.jtl not found"
+        fi
+
+    - name: Archive output.csv if exists
       uses: actions/upload-artifact@v4
       with:
-        name: movie-output
+        name: output-csv
         path: output.csv
 
-    - name: Commit output.csv to repository
+    - name: Setup Python for Google Sheets
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install Python dependencies
+      run: pip install --upgrade google-api-python-client google-auth
+
+    - name: Write Google credentials file
       run: |
-        git config --global user.name "github-actions[bot]"
-        git config --global user.email "github-actions[bot]@users.noreply.github.com"
-        git add output.csv
-        git commit -m "Update output.csv from JMeter test" || echo "No changes to commit"
-        git push origin HEAD:main
-      env:
-        # Optional: Use PAT if pushing to protected branch
-        GITHUB_TOKEN: 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
+        cat <<EOF > service-account.json
+        ${{ secrets.GOOGLE_SHEET_CREDS_JSON }}
+        EOF
+
+    - name: Push output.csv to Google Sheet
+      run: python update_sheet.py ${{ secrets.GOOGLE_SHEET_ID }}
